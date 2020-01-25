@@ -26,46 +26,47 @@ class Ui:
         descartando, para el caso del destino, la opción seleccionada en el origen"""
 
         if discard != "B" and discard != "b":
-            print("\t\t(B)inario")
+            print("\t(B)inario")
         if discard != "O" and discard != "o":
-            print("\t\t(O)ctal")
+            print("\t(O)ctal")
         if discard != "D" and discard != "d":
-            print("\t\t(D)ecimal")
+            print("\t(D)ecimal")
         if discard != "H" and discard != "h":
-            print("\t\t(H)exadecimal")
-        print("\t\t-------------")
+            print("\t(H)exadecimal")
+        print("\t-------------")
         if discard != "X":
-            print("\t\t(R)egresar")
-        print("\t\t(S)alir")
-        print("\n")
+            print("\t(R)egresar")
+        print("\t(S)alir\n")
 
         opt = getChar()
+
+        if opt == "S" or opt == "s":
+            exit()
+        if opt == "R" or opt == "r":
+            # del self.ui
+            # del self.operation
+            main()
+
         return opt
 
     def renderBaseMenu(self):
         """Muestra en pantalla los menús necesarios para seleccionar el sistema numérico base origen/destino"""
 
         clear()
-        print("""
-            BaseConverter es una herramienta para convertir números entre distintas bases de sistemas numéricos.
 
-            Por favor seleccione el sistema numérico base del número que desea convertir (origen):
-            """)
-
+        print("BaseConverter es una herramienta para convertir números entre distintas bases de sistemas numéricos." +
+            "\n\nSeleccione el sistema numérico base del número que desea convertir (origen): \n")
         origin = self.renderBaseMenuOptions()
 
-        print("""
-            Ahora seleccione la base del sistema numérico al que desea convertir el número (destino):
-            """)
-
+        print("\n\nSeleccione la base del sistema numérico al que desea convertir el número (destino): \n")
         destination = self.renderBaseMenuOptions(origin)
 
-        return {'origin': origin, 'destination': destination}
+        number = input("\n\tIngrese el número a cambiar de base: ")
+
+        return {'origin': origin, 'destination': destination, 'number': number}
 
     def operationSelector(self, originBase, destinationBase):
         "Permite seleccionar la operación adecuada en base a la información proporcionada"
-
-
 
 def main():
     ui = Ui()
@@ -73,6 +74,23 @@ def main():
 
     operation = Operation(data["origin"], data["destination"])
 
+    if data["origin"] == "D" or data["origin"] == "d":
+        resultList = operation.convertDecToBase(int(data["number"]))
+    elif data["destination"] == "D" or data["destination"] == "d":
+        resultList = operation.convertBaseToDec(data["number"])
+    else:
+        resultList = operation.convertBaseToBase(data["number"])
+        pass
+
+    s = [str(i) for i in resultList]
+    result = "".join(s)
+
+    print("\n\t    El resultado es: " + result)
+    out = input("\n\tDesea realizar otra conversión?\n\tPresione 'n' para salir o cualquier otra tecla para continuar: ")
+    if out == "n":
+        exit()
+    else:
+        main()
     # clear()
 
 if __name__ == '__main__':
