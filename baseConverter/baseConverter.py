@@ -65,9 +65,6 @@ class Ui:
 
         return {'origin': origin, 'destination': destination, 'number': number}
 
-    def operationSelector(self, originBase, destinationBase):
-        "Permite seleccionar la operación adecuada en base a la información proporcionada"
-
 def main():
     ui = Ui()
     data = ui.renderBaseMenu()
